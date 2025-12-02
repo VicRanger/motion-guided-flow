@@ -1,0 +1,414 @@
+# location: buffer_config/augmented_data_recipe
+include_name: augmented_data_recipe
+augmented_data_recipe__history_num: 3
+augmented_data_recipe__history_template: [
+    "dmdl_color",
+    "dmdl_color_brdf",
+    "dmdl_color_ess",
+    "base_color",
+    "roughness",
+    "metallic",
+    "nov",
+    "world_normal",
+    "motion_vector",
+    "sky_color",
+    "skybox_mask",
+    "st_color",
+    "depth",
+    "st_alpha",
+    "scene_light_no_st",
+    "scene_color_no_st",
+    "scene_light",
+    "scene_color",
+]
+augmented_data_recipe__future_num: 1
+augmented_data_recipe__future_template: [
+    "dmdl_color",
+    "dmdl_color_brdf",
+    "dmdl_color_ess",
+    "roughness",
+    "motion_vector",
+    "sky_color",
+    "skybox_mask",
+    "st_color",
+    "st_alpha",
+    "scene_light_no_st",
+    "scene_color_no_st",
+    "scene_light",
+    "scene_color",
+]
+augmented_data_recipe__demodulate_template: [
+    "scene_color",
+    "scene_color_no_st",
+]
+augmented_data_recipe__history_warped_template: [
+    "scene_light_no_st",
+    "scene_color_no_st",
+    "scene_light",
+    "scene_color",
+    "dmdl_color",
+    "dmdl_color_brdf",
+    "dmdl_color_ess",
+]
+data_attribute: {
+    "metadata": {"type":"image", "channel": 0},
+    "base_color": {"type":"image", "channel": 3},
+    "dmdl_color_brdf": {"type":"image", "channel": 3},
+    "dmdl_color_ess": {"type":"image", "channel": 3},
+    "dmdl_color": {"type":"image", "channel": 3},
+    "black3": {"type":"image", "channel": 3},
+    "camera_position": {"type":"image", "channel": 3},
+    "camera_normal": {"type":"image", "channel": 3},
+    "depth": {"type":"image", "channel": 1},
+    "discontinuity_mask": {"type":"image", "channel": 1},
+    "metallic": {"type":"image", "channel": 1},
+    "motion_vector": {"type":"image", "channel": 2},
+    "merge_motion_vector": {"type":"image", "channel": 2},
+    "nov": {"type":"image", "channel": 1},
+    "roughness": {"type":"image", "channel": 1},
+    "skybox_mask": {"type":"image", "channel": 1},
+    "sky_color": {"type":"image", "channel": 3},
+    "sky_depth": {"type":"image", "channel": 1},
+    "specular": {"type":"image", "channel": 1},
+    "scene_color": {"type":"image", "channel": 3},
+    "scene_light": {"type":"image", "channel": 3},
+    "scene_color_no_st": {"type":"image", "channel": 3},
+    # "scene_color_no_shadow": {"type":"image", "channel": 3},
+    "scene_light_no_st": {"type":"image", "channel": 3},
+    # "scene_light_no_shadow": {"type":"image"},
+    "world_position": {"type":"image", "channel": 3},
+    "world_normal": {"type":"image", "channel": 3},
+    "warped_scene_light": {"type":"image", "channel": 3},
+    "white1": {"type":"image", "channel": 1},
+    "st_alpha": {"type":"image", "channel": 1},
+    "st_color": {"type":"image", "channel": 3},
+    "forward_warped_pixel_render_mask": {"type":"image", "channel": 1},
+    # "history_masked_occlusion_warped_scene_light_extranet": {"type":"image"},
+    # "history_warped_scene_light_extranet": {"type":"image"},
+    # "history_occlusion_mask_extranet": {"type":"image"},
+    # "occlusion_motion_vector_0_extranet": {"type": "image"},
+    # "history_occlusion_warped_scene_light_extranet": {"type":"image"},
+    # "history_masked_occlusion_warped_scene_light": {"type":"image"},
+    # "history_occlusion_mask": {"type":"image"},
+    # "history_warped_scene_light_cross": {"type":"image"},
+    # "history_occlusion_warped_scene_light": {"type":"image"},
+    # "history_masked_warped_scene_light": {"type":"image"},
+    "render_mask": {"type":"image", "channel": 1},
+    "shading_confidence": {"type":"image", "channel": 1},
+    "stencil": {"type":"image", "channel": 1},
+    "occlusion_mask": {"type":"image", "channel": 1},
+    "continuity_mask": {"type":"image", "channel": 1},
+    "occlusion_motion_vector": {"type":"image", "channel": 2},
+    "discontinuity_mask": {"type":"image", "channel": 1},
+    "merged_motion_vector": {"type":"image", "channel": 2},
+    # "shadow": {"type":"image"},
+    # "cross_sample": {"type":"image"},
+    # "camera__view_matrix": {"type":"mat4"},
+    # "light__directional_light_camera_direction": {"type":"vec3"},
+    # "world_to_clip": {"type":"mat4"},
+    # "warped_scene_light_cross": {"type":"image"},
+}
+augmented_data_recipe: {
+    "camera_position": {
+        "dep": [
+            "world_position",
+            "camera__view_matrix"
+        ]
+    },
+    "camera_normal": {
+        "dep": [
+            "world_normal",
+            "camera__view_matrix"
+        ]
+    },
+    "light__directional_light_camera_direction": {
+        "dep": [
+            "light__directional_light_world_direction"
+        ]
+    },
+    "skybox_mask": {
+        "dep": [
+            "depth",
+            # "sky_depth",
+            "base_color"
+        ]
+    },
+    "sky_color": {
+        "dep": [
+            "skybox_mask",
+            'scene_color_no_st'
+        ]
+    },
+    # "warped_scene_light": {
+    #     "dep": [
+    #         "scene_light",
+    #         "motion_vector"
+    #     ]
+    # },
+    "black3": {
+        'dep': [
+            'base_color',
+        ]
+    },
+    "white1": {
+        'dep': [
+            'base_color',
+        ]
+    },
+    "stencil": {
+        'dep': [
+            'base_color',
+        ]
+    },
+    "dmdl_color": {
+        'dep': [
+        ]
+    },
+    "dmdl_color_brdf": {
+        'dep': [
+            'roughness',
+            'nov',
+            'metallic',
+            'specular',
+            'base_color'
+        ]
+    },
+    "dmdl_color_ess": {
+        'dep': [
+            'metallic',
+            'specular',
+            'base_color'
+        ]
+    },
+    "history_occlusion_mask_extranet": {
+        "dep": [
+            "depth",
+            "nov",
+            "world_normal",
+            "world_position",
+            "stencil",
+            "motion_vector",
+        ],
+        "num_history":5,
+        "dep_history":[
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector","scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            [ "scene_color", "base_color","world_normal", "world_position", "stencil"],
+        ]
+    },
+    "history_masked_occlusion_warped_scene_light_extranet": {
+        "dep": [
+            "depth",
+            "nov",
+            "world_normal",
+            "world_position",
+            "stencil",
+            "motion_vector",
+        ],
+        "num_history":5,
+        "dep_history":[
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector", "scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            ["motion_vector","scene_color", "base_color",  "world_normal", "world_position", "stencil"],
+            [ "scene_color", "base_color","world_normal", "world_position", "stencil"],
+        ]
+    },
+    "history_occlusion_warped_scene_light_extranet": {
+        "dep": [
+            "depth",
+            "motion_vector",
+        ],
+        "num_history":5,
+        "dep_history":[
+            ["scene_color", "base_color", "motion_vector"],
+            ["scene_color", "base_color", "motion_vector"],
+            ["scene_color", "base_color", "motion_vector"],
+            ["scene_color", "base_color", "motion_vector"],
+            ["scene_color", "base_color", ],
+        ]
+    },
+    "history_warped_scene_light_extranet": {
+        "dep": [
+            "history_scene_light_0",
+            "history_scene_light_2",
+            "history_scene_light_4",
+            "merged_motion_vector_0",
+            "merged_motion_vector_2",
+            "merged_motion_vector_4",
+            "motion_vector",
+            "history_occlusion_mask_0_extranet",
+            "history_occlusion_mask_2_extranet",
+            "history_occlusion_mask_4_extranet",
+            "occlusion_motion_vector_0_extranet",
+            "occlusion_motion_vector_2_extranet",
+            "occlusion_motion_vector_4_extranet",
+        ],
+        "num_history":0,
+        "dep_history":[]
+    },
+    "occlusion_mask": {
+        "dep": [
+            "depth",
+            "nov",
+            "world_normal",
+            "world_position",
+            "motion_vector",
+            "stencil",
+            "skybox_mask"
+        ]
+    },
+    # "occlusion_motion_vector": {
+    #     "dep": [
+    #         "motion_vector",
+    #         "occlusion_mask",
+    #     ]
+    # },
+    # "history_occlusion_warped_scene_light_0": {
+    #     "dep": [
+    #         "scene_light",
+    #         "occlusion_motion_vector",
+    #     ]
+    # },
+    # "history_masked_warped_scene_light_0": {
+    #     "dep": [
+    #         "history_warped_scene_light_0",
+    #         "discontinuity_mask",
+    #     ]
+    # },
+    # "history_masked_occlusion_warped_scene_light_0": {
+    #     "dep": [
+    #         "history_occlusion_warped_scene_light_0",
+    #         "occlusion_mask",
+    #     ]
+    # },
+    # 4x
+    "history_occlusion_mask": {
+        "dep": [
+            "occlusion_mask",
+        ]
+    },
+    # "history_warped_scene_color_mv": {
+    #     "dep": [
+    #         "history_warped_scene_color_4",
+    #         "history_warped_scene_color_2",
+    #         "history_warped_scene_color_0",
+    #         "scene_color",
+    #     ],
+    # },
+    "merged_motion_vector":{
+        "dep": [
+            "motion_vector",
+        ],
+        "num_history":3,
+        "dep_history":[
+            ["motion_vector"],
+            ["motion_vector"],
+            ["motion_vector"],
+            ["motion_vector"],
+            ["motion_vector"],
+        ]
+    },
+    # "history_multi_warped_scene_color": {
+    #     "dep": [
+    #         "motion_vector",
+    #     ],
+    #     "num_history":5,
+    #     "dep_history":[
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color"],
+    #     ]
+    # },
+    # "history_multi_warped_scene_color": {
+    #     "dep": [
+    #         "motion_vector",
+    #     ],
+    #     "num_history":5,
+    #     "dep_history":[
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color","motion_vector"],
+    #         ["scene_color"],
+    #     ]
+    # },
+    # "shadow": {
+    #     "dep": [
+    #         'scene_light_no_st',
+    #         'scene_light_no_shadow',
+    #     ]
+    # },
+    "continuity_mask": {
+        "dep": [
+            "merged_motion_vector_0",
+            # "history_scene_color_0",
+            # "scene_color",
+        ],
+        "num_history": 1,
+        "dep_history":[
+            []
+            # ["scene_color"],
+        ]
+    },
+    # "discontinuity_mask": {
+    #     "dep": [
+    #         "history_warped_scene_color_no_st_0",
+    #         "scene_color_no_st"
+    #     ],
+    #     "config": {
+    #         "diff": 1
+    #     }
+    # },
+    # "shadow_discontinuity_mask": {
+    #     "dep": [
+    #         "shadow_mask",
+    #     ],
+    #     "config": {
+    #         "ratio": 0.1
+    #     }
+    # },
+    # "cross_sample": {
+    #     "dep": [
+    #         "world_position",
+    #         "world_to_clip"
+    #     ]
+    # },
+    # "warped_scene_light_cross": {
+    #     "dep": [
+    #         "scene_light",
+    #         "cross_sample"
+    #     ]
+    # },
+    # "history_warped_scene_light_cross": {
+    #     "dep": [
+    #         "cross_sample"
+    #     ],
+    #     "num_history": 1,
+    #     "dep_history": [
+    #         ["scene_light", ],
+    #     ]
+    # },
+    # "history_masked_warped_scene_light_0_extranet": {
+    #     "dep": [
+    #         "history_warped_scene_light_0",
+    #         "history_occlusion_mask_0_extranet"
+    #     ],
+    # },
+    "scene_color":{
+        "dep":['scene_color_no_st', "st_color", "st_alpha"]
+    },
+    "scene_color_no_st":{
+        "dep":['scene_color', "st_color", "st_alpha"]
+    },
+    "st_color":{
+        "dep":['depth']
+    },
+    "st_alpha":{
+        "dep":['depth']
+    }
+}

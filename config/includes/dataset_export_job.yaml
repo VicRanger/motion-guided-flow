@@ -1,0 +1,44 @@
+include_name: job_config
+num_thread: 4
+import_path: "/path/to/exr" # store exr
+export_path: "/path/to/npz" # store npz
+dataset_path: {
+  "CV_T": "/path/to/npz",
+  # "DT_T": "/path/to/npz",
+  "DT_T": "/data4/wzz/dataset/T/",
+  "FC_T": "/data4/wzz/dataset/T/",
+  # "ST_T": "/path/to/npz",
+  "ST_T": "/path/to/npz",
+  "WT_T": "/path/to/npz",
+  "default": "/path/to/npz",
+}
+dataset_format: "npz"
+overwrite: true
+scene: [
+  # "CV_T/CV_01_720",
+  # "CV_T/CV_02_720",
+  # "CV_T/CV_03_720", 
+  # "CV_T/CV_04_720",
+  # "CV_T/CV_05_720",
+  # "ST_T/ST_01_720",
+  # "ST_T/ST_02_720",
+  # "ST_T/ST_03_720", 
+  # "ST_T/ST_04_720",
+  # "ST_T/ST_05_720",
+  # "DT_T/DT_01_720",
+  # "DT_T/DT_02_720",
+  # "DT_T/DT_03_720",
+  # "DT_T/DT_04_720",
+  # "DT_T/DT_05_720",
+  # "FC_T/FC_01_720",
+  # "FC_T/FC_02_720",
+  # "FC_T/FC_03_720",
+  # "FC_T/FC_04_720",
+  # "FC_T/FC_05_720",
+]
+test_config: 
+  enable: false
+  nums: 20
+scene_info_name: "SceneInfo"
+pattern: "{}/{}/frame_{}.{}"
+num_history_frame: 0

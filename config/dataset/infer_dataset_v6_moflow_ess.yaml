@@ -1,0 +1,28 @@
+job_name: "dataset_ours_v6"
+config_root_path: "config/"
+base: "model-arch/moflow_base.yaml"
+pipeline: [
+    "model-pipeline/moflow_config.yaml",
+    "trainers/moflow_trainer.yaml",
+]
+include: []
+num_gpu: 1
+cuda_visible_devices: '0\,'
+output_root_path: "../output/train_output/"
+clear_output_path: True
+dataset: 
+    demodulation_mode: "ess"
+    scale_config: {}
+    # pin_memory: true
+    shuffle_metadata: false
+    shuffle_loader: false
+    augment_loader: false
+    train_num_worker_sum: 8
+    block_size: 1
+    part_size: 1
+    train_scale: !!float 1.0
+    train_scene: [
+    ]
+    test_scene: [
+      {"name":"dummy/scene", "config":{"indice":[]}},
+    ]

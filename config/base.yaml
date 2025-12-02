@@ -1,0 +1,93 @@
+job_name: "month_day/version_modelname_settings"
+config_root_path: "config/"
+base: null
+pipeline: [
+  # "export/export.yaml"
+]
+include: [
+  "includes/dataset_export_job.yaml",
+]
+train_parameter:
+  optimizer: 
+    class: AdamW
+    weight_decay: 0.0
+    betas: [0.9, 0.999]
+  gradient_accumulation_steps: 1
+  amp: false
+  train_precision_mode: "fp32"
+  test_precision_mode: "fp32"
+  epoch: 150
+  batch_size: 6
+  decay_at: !!float 1.0
+  lr_config:
+    initial_lr: !!float 1e-4
+detect_anomaly: false
+output_root_path: "../output/train_output/"
+debug: false
+log_to_file: true
+num_gpu: 0
+cuda_visible_devices: ""
+clear_output_path: false
+dataset:
+  class: ""
+  train_precision_mode: "fp16"
+  test_precision_mode: "fp16"
+  # recurrent_train: true,
+  # recurrent_test: true,
+  # recurrent_train_start: 0.5,
+  # brdf_demodulate: true
+  # for compatibility for old version config
+  flip: false
+  shuffle_metadata: false
+  shuffle_loader: false
+  pin_memory: false
+  path: ""
+  train_num_worker_sum: 6
+  test_num_worker: 1
+  mode: "sep"
+  train_scale: 1.0
+  is_block: false
+  block_size: 8
+  train_scene: []
+  test_scene: []
+  part: []
+  history_config: {}
+  future_conifg: null
+trainer:
+  class: ""
+  wait_to_start: "0"
+  debug_data_flow: true
+  ddp__find_unused_parameters: false
+loss:
+  class: "LossFunction"
+  train_loss: {}
+  debug_loss: {}
+log:
+  train_scalar_epoch_sum: 5
+  train_image_epoch_sum: 1
+  test_image_epoch_sum: 20
+  test_image_epoch_offset: 1
+  train: {
+    # log_item_config_node
+    # {"source": "scale_name", "name": "display_name", "fmt": "{:.2g}", "bar_step": false, "bar_epoch": false, "log_step": true, "log_epoch": true},
+  }
+  test: {
+    # log_item_config_node
+    # {"source": "scale_name", "name": "display_name", "fmt": "{:.2g}", "bar_step": false, "bar_epoch": false, "log_step": true, "log_epoch": true},
+  }
+model:
+  model_name: "instance_model_name"
+  class: ""
+  precision: "fp32"
+  inference_precision: "fp32"
+  
+
+
+
+
+  
+
+
+
+
+

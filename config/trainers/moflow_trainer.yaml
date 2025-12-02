@@ -1,0 +1,37 @@
+trainer: 
+    "class": "MFRRNetTrainer"
+    # "detach_recurrent_data": true,
+    "debug_data_flow": true
+    "recurrent_train": true
+    "recurrent_test": true
+    'recurrent_train_start': 0.0
+    "recurrent_train":
+        block_size: [
+            {'start': 0, 'end': 1, 'value': 1, 'ratio': true},
+        ]
+    "recurrent_test":
+        block_size: [
+            {'start': 0, 'end': 1, 'value': 1,'ratio': true},
+        ]
+
+dataset: {
+    "class": "MFRRNetDataset",
+    "path": "",
+    "flip": false,
+    "shuffle_metadata": false,
+    "shuffle_loader": false,
+    "augment_loader": false,
+    "pin_memory": false,
+    "train_num_worker_sum": 1,
+    "test_num_worker": 1,
+    "mode": "sep",  # "sep" or "mix", the default is "mix"
+    "train_scale": !!float 1.0,
+    "is_block": true,
+    "is_block_part": true,
+    "block_size": 8,
+    "part_size": 8,
+}
+log: {
+    "train": {
+    }
+}

@@ -1,0 +1,109 @@
+job_name: "251202/single_moflow"
+config_root_path: "config/"
+base: "model-arch/moflow_base.yaml"
+pipeline: [
+    "model-pipeline/moflow_config.yaml",
+    "model-pipeline/moflow_loss.yaml",
+    "trainers/moflow_trainer.yaml",
+]
+# pre_model: "../checkpoints/FC_moflow.pt"
+
+initial_inference: false
+# log:
+#   test_image_epoch_sum: 50
+# trainer:
+#     debug_data_flow: false
+
+include: []
+train_parameter: {
+    "epoch": 150,
+    "batch_size": 8,
+    # "gradient_accumulation_steps": 4,
+    "amp": true,
+    "train_precision_mode": "fp16",
+    "lr_config": {
+        "class": "ConstantWarmup",
+        "max_lr": !!float 2e-4,
+        "min_lr": !!float 2e-5,
+        "warmup_epoch": 0,
+        'decay_at_epoch': 0,
+        'total_epoch': 200,
+    },
+}
+debug: False
+num_gpu: 2
+# cuda_visible_devices: '0\,1\,2\,3'
+cuda_visible_devices: '0\,1'
+
+output_root_path: "../output/train_output/"
+# clear_output_path: True
+buffer_config:
+    set_max_luminance: true
+    max_luminance: !!float 1024.0
+    mu: !!float 8.0
+dataset: 
+    "demodulation_mode": "ess"
+    scale_config: {}
+    # pin_memory: true
+    "part": [metadata, depth, world_normal, gbuffer, base_color, scene_color_no_st, nov, motion_vector, sky_color, skybox_mask, st, ]
+    train_precision_mode: "fp16"
+    shuffle_metadata: false
+    shuffle_loader: false
+    augment_loader: false
+    flip: true
+    train_num_worker_sum: 8
+    block_size: 8
+    part_size: 4
+    train_scale: !!float 1.0
+    dataset: 
+        "train_scene": [
+            {"name":"FC_T/FC_01_720", "config":{"indice":[], "path_alias": "FC_T"}},
+            {"name":"FC_T/FC_02_720", "config":{"indice":[], "path_alias": "FC_T"}},
+            {"name":"FC_T/FC_03_720", "config":{"indice":[], "path_alias": "FC_T"}},
+            {"name":"FC_T/FC_04_720", "config":{"indice":[], "path_alias": "FC_T"}},
+        ]
+        "test_scene": [
+            {"name":"FC_T/FC_05_720", "config":{"indice":[600], "path_alias": "FC_T"}},
+        ]
+
+model: {
+    model_name: "single_FC_moflow",
+    "dummy_input_size_h": 720, # 368 480  720 1088 1440 2160
+    "dummy_input_size_w": 1280, # 960 880 1280 1920 2560 3840
+    "history_encoders": {
+        "num": 2,
+    },
+    "loss_config": {
+        "zero_flow_mask": true,
+        "zero_flow_ratio": 0.05
+    },
+    "feature_config": {
+        "flow_residual_scale": 0.1,
+    },
+    "feature": [
+        "flow_residual_scale",
+        "demodulate",
+        "demodulate_before_warp",
+        "recurrent_d2e",
+        "recurrent_d2e_decoding_split",
+        "feature_warp",
+        "input_block",
+        "output_block",
+        "st",
+        "single_encoding_split_st",
+        "st_feature_warp",
+        'rmv_fuse',
+        'initial_by_rmv',
+        'st_rmv_fuse',
+        'st_initial_by_rmv',
+        "tmv_skip_conn",
+        "st_lmv_res",
+        "st_lmv_res_cat",
+        "his_st_lmv_res",
+        "his_st_lmv_res_cat",
+        "lmv_res",
+        "lmv_res_cat",
+        "his_lmv_res",
+        "his_lmv_res_cat",
+    ],
+}
